@@ -1,4 +1,4 @@
-from gym import core, spaces
+from gymnasium import core, spaces
 from dm_control import suite
 from dm_env import specs
 import numpy as np
@@ -159,9 +159,10 @@ class DMCWrapper(core.Env):
         obs = self._get_obs(time_step)
         self.current_state = _flatten_obs(time_step.observation)
         extra['discount'] = time_step.discount
-        return obs, reward, done, extra
+        # return obs, reward, done, extra
+        return obs, reward, done, False, extra
 
-    def reset(self):
+    def reset(self, seed=None, options=None):
         time_step = self._env.reset()
         self.current_state = _flatten_obs(time_step.observation)
         obs = self._get_obs(time_step)
