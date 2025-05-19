@@ -159,14 +159,16 @@ class DMCWrapper(core.Env):
         obs = self._get_obs(time_step)
         self.current_state = _flatten_obs(time_step.observation)
         extra['discount'] = time_step.discount
-        # return obs, reward, done, extra
-        return obs, reward, done, False, extra
+        terminated = done
+        truncated = False
+        return obs, reward, terminated, truncated, extra
 
     def reset(self, seed=None, options=None):
         time_step = self._env.reset()
         self.current_state = _flatten_obs(time_step.observation)
         obs = self._get_obs(time_step)
-        return obs, {}
+        info = {}
+        return obs, info
 
     def render(self, mode='rgb_array', height=None, width=None, camera_id=0):
         assert mode == 'rgb_array', 'only support rgb_array mode, given %s' % mode
